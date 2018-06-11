@@ -12,6 +12,8 @@
 		6974A12320CDFB3C00532F0D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6974A12120CDFB3C00532F0D /* Main.storyboard */; };
 		6974A12520CDFB3D00532F0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6974A12420CDFB3D00532F0D /* Assets.xcassets */; };
 		6974A12820CDFB3D00532F0D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6974A12620CDFB3D00532F0D /* LaunchScreen.storyboard */; };
+		6974A13020CDFD7100532F0D /* CurrencyTabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974A12F20CDFD7100532F0D /* CurrencyTabelViewCell.swift */; };
+		69C9DA6320CEAF4D0053C8F7 /* CurrencyTableViewDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C9DA6220CEAF4D0053C8F7 /* CurrencyTableViewDataModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +24,8 @@
 		6974A12420CDFB3D00532F0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6974A12720CDFB3D00532F0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6974A12920CDFB3D00532F0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6974A12F20CDFD7100532F0D /* CurrencyTabelViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTabelViewCell.swift; sourceTree = "<group>"; };
+		69C9DA6220CEAF4D0053C8F7 /* CurrencyTableViewDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTableViewDataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +60,9 @@
 			children = (
 				6974A11D20CDFB3C00532F0D /* AppDelegate.swift */,
 				6974A11F20CDFB3C00532F0D /* ViewController.swift */,
+				69C9DA6220CEAF4D0053C8F7 /* CurrencyTableViewDataModel.swift */,
 				6974A12120CDFB3C00532F0D /* Main.storyboard */,
+				6974A12F20CDFD7100532F0D /* CurrencyTabelViewCell.swift */,
 				6974A12420CDFB3D00532F0D /* Assets.xcassets */,
 				6974A12620CDFB3D00532F0D /* LaunchScreen.storyboard */,
 				6974A12920CDFB3D00532F0D /* Info.plist */,
@@ -135,7 +141,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69C9DA6320CEAF4D0053C8F7 /* CurrencyTableViewDataModel.swift in Sources */,
 				6974A12020CDFB3C00532F0D /* ViewController.swift in Sources */,
+				6974A13020CDFD7100532F0D /* CurrencyTabelViewCell.swift in Sources */,
 				6974A11E20CDFB3C00532F0D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +291,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y59VP35PTM;
 				INFOPLIST_FILE = CurrencyConverter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -301,6 +310,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Y59VP35PTM;
 				INFOPLIST_FILE = CurrencyConverter/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -1,24 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.12" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="b7d-LH-MFP">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Table View Controller-->
+        <scene sceneID="n9I-NT-SL2">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                <tableViewController id="b7d-LH-MFP" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="bzE-z5-0gw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="100" id="zmc-SH-HNf" customClass="CurrencyTableViewCell" customModule="CurrencyConverter" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zmc-SH-HNf" id="0nF-g3-b6F">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="99.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pOb-Y3-4nY">
+                                            <rect key="frame" x="16" y="5" width="89.5" height="89.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="pOb-Y3-4nY" secondAttribute="height" multiplier="1:1" id="81H-E2-cvw"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$ 0.7765" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBO-v2-U0N">
+                                            <rect key="frame" x="113" y="5" width="112" height="33.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BQ-42-OxT">
+                                            <rect key="frame" x="113" y="39" width="35" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="8BQ-42-OxT" firstAttribute="top" secondItem="pBO-v2-U0N" secondAttribute="bottom" constant="0.5" id="B56-Wz-03U"/>
+                                        <constraint firstAttribute="bottom" secondItem="pOb-Y3-4nY" secondAttribute="bottom" constant="5" id="Blg-ip-pYI"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8BQ-42-OxT" secondAttribute="trailing" constant="20" symbolic="YES" id="XYL-1s-jZ8"/>
+                                        <constraint firstItem="pBO-v2-U0N" firstAttribute="top" secondItem="0nF-g3-b6F" secondAttribute="top" constant="5" id="ful-yU-IRw"/>
+                                        <constraint firstItem="8BQ-42-OxT" firstAttribute="leading" secondItem="pOb-Y3-4nY" secondAttribute="trailing" constant="7.5" id="hch-xI-EOt"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pBO-v2-U0N" secondAttribute="trailing" constant="20" symbolic="YES" id="i3m-9t-aPf"/>
+                                        <constraint firstItem="pOb-Y3-4nY" firstAttribute="top" secondItem="0nF-g3-b6F" secondAttribute="top" constant="5" id="oak-ah-kiV"/>
+                                        <constraint firstItem="pBO-v2-U0N" firstAttribute="leading" secondItem="pOb-Y3-4nY" secondAttribute="trailing" constant="7.5" id="oz9-Uf-FsS"/>
+                                        <constraint firstItem="pOb-Y3-4nY" firstAttribute="leading" secondItem="0nF-g3-b6F" secondAttribute="leading" constant="16" id="xWl-M6-Fzf"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="convertAmountLabel" destination="pBO-v2-U0N" id="cTG-MZ-wyA"/>
+                                    <outlet property="countryImageView" destination="pOb-Y3-4nY" id="fFa-ah-gg9"/>
+                                    <outlet property="countryLabel" destination="8BQ-42-OxT" id="tnz-yr-RfS"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="b7d-LH-MFP" id="FFr-qh-N95"/>
+                            <outlet property="delegate" destination="b7d-LH-MFP" id="oCi-vX-qzN"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FGh-ES-y1X" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="212" y="766.86656671664173"/>
         </scene>
     </scenes>
 </document>
