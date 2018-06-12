@@ -19,10 +19,7 @@ class CellView: UITableViewCell {
         countryImageView.image = UIImage(named: cell.countryImagePath)
         convertAmountLabel.text = String(cell.convertAmount)
         countryLabel.text = cell.country
-    }
-    
-    
-    
+    }    
 }
 
 

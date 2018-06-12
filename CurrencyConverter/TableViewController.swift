@@ -9,50 +9,44 @@
 import UIKit
 
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    //Extends TableViewDelegate and TableViewDataSource Because..........
+    
+    //fileprivate makes variable private to everything outside of this file
     @IBOutlet var tableView: UITableView!
     
+    //Cell Array holds the data of each country cell
     fileprivate var cellArray = [CellDataObject]()
     
+    //Returns the number of items in cellArray, the number of rows we want in the table
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         //Create Cell with dequeue resuable cell at the current index and with our Reuse Identifier
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell1", for: indexPath) as! CellView
+        //Dequeue method allows for greater efficiency as we reuse cells when they are not in view
+        let cell = tableView.dequeueReusableCell(withIdentifier: "countryConverter", for: indexPath) as! CellView
+        //Identifier is from storyboard
+        
+        //Pass to configure cell which creates a UI item from the CellDataObject data for each element in Cell Array
         cell.configureCell(cell: cellArray[indexPath.item])
         return cell
     }
     
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //Test
-        //fileprivate makes variable private to everything outside of this file
         
-        let cell1 = CellDataObject(path: "usd.png",country: "USD",amount: 0.836)
-        cellArray.append(cell1)
-        
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 44
+        //Testing _______________ REMOVE
+        cellArray.append(CellDataObject(path: "usd.png", country: "USD", amount: 0.8366))
+        cellArray.append(CellDataObject(path: "cad.png", country: "CAD", amount: 1))
+        cellArray.append(CellDataObject(path: "gbp.png", country: "GBP", amount: 0.5532))
+        cellArray.append(CellDataObject(path: "eur.png", country: "EURO", amount: 0.6543))
+
         
 
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        //Using Reuse Identifier to only resuse the cells as they are off the screen
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "BetterTableViewCell")
-        //Set self to be delegate and data source
+        //Set self to be delegate and data source because....... TODO
         tableView.delegate = self
         tableView.dataSource = self
- 
     }
-
-    
-
-
 }
 
