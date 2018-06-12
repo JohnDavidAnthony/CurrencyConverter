@@ -17,9 +17,21 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //Cell Array holds the data of each country cell
     fileprivate var cellArray = [CellDataObject]()
     
+    
     //Returns the number of items in cellArray, the number of rows we want in the table
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellArray.count
+    }
+    
+    //Returns a UITableViewHeaderFooterView outlet that was created in the storyboard
+    //This SUCKED to implement, got the answer from here: https://stackoverflow.com/questions/30149551/tableview-section-headers-disappear-swift
+    @IBOutlet var headerView: UITableViewHeaderFooterView!
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return headerView
+    }
+    //Return the height of the header
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat(70)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
