@@ -22,6 +22,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return cellArray.count
     }
     
+    //Sets a UIView for each section allowing me to create a custom header
+    //func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    //}
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //Create Cell with dequeue resuable cell at the current index and with our Reuse Identifier
         //Dequeue method allows for greater efficiency as we reuse cells when they are not in view

@@ -1,16 +1,17 @@
 //
-//  TableHeaderController.swift
+//  TableHeaderObject.swift
 //  CurrencyConverter
 //
 //  Created by John David Anthony on 2018-06-12.
 //  Copyright © 2018 John David Anthony. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class TableHeaderController: UIView {
+class TableHeaderObject{
+    var path: String = "cad.png"
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
+    init(path: String) {
+        self.path = path
     }
 }
