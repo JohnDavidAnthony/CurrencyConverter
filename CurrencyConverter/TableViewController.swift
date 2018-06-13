@@ -11,8 +11,8 @@ import UIKit
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //Extends TableViewDelegate and TableViewDataSource Because..........
     
-    //fileprivate makes variable private to everything outside of this file
     @IBOutlet var tableView: UITableView!
+    var selectedCell = CellDataObject()
     
     //Cell Array holds the data of each country cell
     fileprivate var cellArray = [CellDataObject]()
@@ -27,15 +27,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //This SUCKED to implement, got the answer from here: https://stackoverflow.com/questions/30149551/tableview-section-headers-disappear-swift
     @IBOutlet var headerView: UITableViewHeaderFooterView!
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return headerView
+        return headerView //Lol really, thats all you need to do 🔫
     }
     //Return the height of the header
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CGFloat(70)
     }
     
+    //Create Cell with dequeue resuable cell at the current index and with our Reuse Identifier
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //Create Cell with dequeue resuable cell at the current index and with our Reuse Identifier
         //Dequeue method allows for greater efficiency as we reuse cells when they are not in view
         let cell = tableView.dequeueReusableCell(withIdentifier: "countryConverter", for: indexPath) as! CellView
         //Identifier is from storyboard
@@ -44,6 +44,30 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.configureCell(cell: cellArray[indexPath.item])
         return cell
     }
+    
+    //Called whenever cell was tapped, initiating a segue to the detailed conversion scene
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedCell = cellArray[indexPath.item]
+        performSegue(withIdentifier: "detailed", sender: tableView.self)
+        print(indexPath.item)
+    }
+    
+    //Called whenever a segue is about to occur, gives me time to send data to upcoming VC
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        //Switch statment to differentiate what segues are occuring
+        switch segue.identifier {
+        case "detailed":
+            
+            //Temporary passing of vars TOBe Updated
+            let detailedVC = segue.destination as! DetailedInformationController
+            detailedVC.selectedCell = selectedCell
+            
+        default:
+            print("Error: Segue not setup")
+        }
+    }
+    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

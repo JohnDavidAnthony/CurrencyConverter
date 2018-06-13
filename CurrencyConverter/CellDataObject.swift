@@ -14,6 +14,11 @@ class CellDataObject {
     var country: String
     var convertAmount: Double
     
+    init() {
+        self.countryImagePath = ""
+        self.country = ""
+        self.convertAmount = 0
+    }
     init(path: String, country: String, amount: Double) {
         self.countryImagePath = path
         self.country = country
