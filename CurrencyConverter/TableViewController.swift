@@ -99,6 +99,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             //Call reload data in main thread because....?
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.tableView.refreshControl?.endRefreshing()
             }
         })
     }
@@ -115,11 +116,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         //UDPATE THIS_________________________________________________-
         updateRates(countries: countryArray, baseCountry: "CAD")
         
-        //AAAAAAAHHHHHHHHHHH HOW DO I GET THE SPINNER TO GO AWAY
-        DispatchQueue.main.async(execute: {
-            self.refreshControl?.endRefreshing()
-            self.tableView.contentOffset = CGPoint.zero
-        })
+        //You get the spinner to go away by ending animation in the update rates for some reason?
     }
     
     override func viewDidLoad() {
