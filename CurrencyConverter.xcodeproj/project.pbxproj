@@ -15,6 +15,7 @@
 		6974A13020CDFD7100532F0D /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6974A12F20CDFD7100532F0D /* CellView.swift */; };
 		69A5DEA220D0A8BB009C2EC0 /* DetailedInformationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69A5DEA120D0A8BB009C2EC0 /* DetailedInformationController.swift */; };
 		69C9DA6320CEAF4D0053C8F7 /* CellDataObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C9DA6220CEAF4D0053C8F7 /* CellDataObject.swift */; };
+		69EC239A20D1EE9D00ADE0C2 /* APIDataHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69EC239920D1EE9D00ADE0C2 /* APIDataHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		6974A12F20CDFD7100532F0D /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		69A5DEA120D0A8BB009C2EC0 /* DetailedInformationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedInformationController.swift; sourceTree = "<group>"; };
 		69C9DA6220CEAF4D0053C8F7 /* CellDataObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellDataObject.swift; sourceTree = "<group>"; };
+		69EC239920D1EE9D00ADE0C2 /* APIDataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDataHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,11 +65,12 @@
 				69A5DEA120D0A8BB009C2EC0 /* DetailedInformationController.swift */,
 				6974A11D20CDFB3C00532F0D /* AppDelegate.swift */,
 				6974A11F20CDFB3C00532F0D /* TableViewController.swift */,
+				69EC239920D1EE9D00ADE0C2 /* APIDataHandler.swift */,
 				69C9DA6220CEAF4D0053C8F7 /* CellDataObject.swift */,
-				6974A12120CDFB3C00532F0D /* Main.storyboard */,
 				6974A12F20CDFD7100532F0D /* CellView.swift */,
 				6974A12420CDFB3D00532F0D /* Assets.xcassets */,
 				6974A12620CDFB3D00532F0D /* LaunchScreen.storyboard */,
+				6974A12120CDFB3C00532F0D /* Main.storyboard */,
 				6974A12920CDFB3D00532F0D /* Info.plist */,
 			);
 			path = CurrencyConverter;
@@ -147,6 +150,7 @@
 				69C9DA6320CEAF4D0053C8F7 /* CellDataObject.swift in Sources */,
 				69A5DEA220D0A8BB009C2EC0 /* DetailedInformationController.swift in Sources */,
 				6974A12020CDFB3C00532F0D /* TableViewController.swift in Sources */,
+				69EC239A20D1EE9D00ADE0C2 /* APIDataHandler.swift in Sources */,
 				6974A13020CDFD7100532F0D /* CellView.swift in Sources */,
 				6974A11E20CDFB3C00532F0D /* AppDelegate.swift in Sources */,
 			);

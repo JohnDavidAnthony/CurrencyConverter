@@ -8,11 +8,14 @@
 
 import UIKit
 
+let apiKey = "83efe7edb3691dfe8b302259bffbff66"
+
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //Extends TableViewDelegate and TableViewDataSource Because..........
     
     @IBOutlet var tableView: UITableView!
-    var selectedCell = CellDataObject()
+    
+
     
     //Cell Array holds the data of each country cell
     fileprivate var cellArray = [CellDataObject]()
@@ -46,6 +49,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //Called whenever cell was tapped, initiating a segue to the detailed conversion scene
+    var selectedCell = CellDataObject()
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedCell = cellArray[indexPath.item]
         performSegue(withIdentifier: "detailed", sender: tableView.self)
@@ -67,7 +71,56 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //Update the currency exchange rate
+    @objc func updateRates(countries: [String], baseCountry: String) {
+        //Create Request String
+        var request = ""
+        for country in countries {
+            request += country + ","
+        }
+        //remove last char to get rid of ','
+        request.removeLast()
+        
+        //Gets the data from the api and updates the cells
+        let apiHandler = APIDataHandler()
+        apiHandler.getDataFromURL(urlString: "http://data.fixer.io/api/latest?access_key=\(apiKey)&symbols=\(request)&format=1", completionHandler: {(data) in
+            
+            //Free API doesn't let me choose base so here is the logic to show the conversion on chosen base
+            //Get base country's rate so that we can divide all of the currencys by that amount
+            let base = data.rates[baseCountry]
+            
+            //Updates each cells convert amount adjusted for base country's rate
+            for cell in self.cellArray {
+                let amount = (data.rates[cell.country]! / base!)
+                // Round to 5 decimal places and assign to cell
+                cell.convertAmount = Double(round(amount*100000)/100000)
+            }
+         
+            //Call reload data in main thread because....?
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        })
+    }
+    
+    
+     var refreshControl: UIRefreshControl?
 
+    //objc wrapper for #selector
+    @objc func refreshView() {
+        var countryArray: [String] = []
+        for country in cellArray {
+            countryArray.append(country.country)
+        }
+        //UDPATE THIS_________________________________________________-
+        updateRates(countries: countryArray, baseCountry: "CAD")
+        
+        //AAAAAAAHHHHHHHHHHH HOW DO I GET THE SPINNER TO GO AWAY
+        DispatchQueue.main.async(execute: {
+            self.refreshControl?.endRefreshing()
+            self.tableView.contentOffset = CGPoint.zero
+        })
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,9 +129,15 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         cellArray.append(CellDataObject(path: "usd.png", country: "USD", amount: 0.8366))
         cellArray.append(CellDataObject(path: "cad.png", country: "CAD", amount: 1))
         cellArray.append(CellDataObject(path: "gbp.png", country: "GBP", amount: 0.5532))
-        cellArray.append(CellDataObject(path: "eur.png", country: "EURO", amount: 0.6543))
+        cellArray.append(CellDataObject(path: "eur.png", country: "EUR", amount: 0.6543))
 
-        
+        let refreshControl = UIRefreshControl()
+        // Add Refresh Control to Table View
+        tableView.refreshControl = refreshControl
+
+        // Configure Refresh Control
+        refreshControl.addTarget(self, action: #selector(refreshView), for: .valueChanged)
+        refreshControl.attributedTitle = NSAttributedString(string: "Fetching Rates", attributes: nil)
 
         //Set self to be delegate and data source because....... TODO
         tableView.delegate = self
