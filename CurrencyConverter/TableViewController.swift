@@ -11,11 +11,10 @@ import UIKit
 let apiKey = "83efe7edb3691dfe8b302259bffbff66"
 
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
     //Extends TableViewDelegate and TableViewDataSource Because..........
     
     @IBOutlet var tableView: UITableView!
-    
-
     
     //Cell Array holds the data of each country cell
     fileprivate var cellArray = [CellDataObject]()
@@ -65,21 +64,29 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             //Temporary passing of vars TOBe Updated
             let detailedVC = segue.destination as! DetailedInformationController
             detailedVC.selectedCell = selectedCell
-            
+            break
+        
+        case "countrySelect":
+            let countrySelectVC = segue.destination as! CountrySelectorController
+            countrySelectVC.keys = self.keys
+            countrySelectVC.values = self.values
+       
         default:
             print("Error: Segue not setup")
         }
     }
     
     //Update the currency exchange rate
+    var keys = [String]()
+    var values = [String]()
     @objc func updateRates(countries: [String], baseCountry: String) {
         //Create Request String
         var request = ""
         for country in countries {
             request += country + ","
         }
-        //remove last char to get rid of ','
-        request.removeLast()
+        //Add basecountry to api call
+        request += baseCountry
         
         //Gets the data from the api and updates the cells
         let apiHandler = APIDataHandler()
@@ -99,32 +106,52 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             //Call reload data in main thread because....?
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                self.tableView.refreshControl?.endRefreshing()
+                //self.tableView.refreshControl?.endRefreshing()
             }
+        })
+        
+        //Get all Aviliable Currencies
+        apiHandler.getAvailableCurrencies(apiKey: apiKey, completionHandler: { (data) in
+            //Sorts the dictionary alphabetically by key, from: https://stackoverflow.com/questions/25377177/sort-dictionary-by-keys
+            let sorted = data.symbols.sorted { $0.key < $1.key }
+            let keysArraySorted = Array(sorted.map({ $0.key }))
+            let valuesArraySorted = Array(sorted.map({ $0.value }))
+            
+            self.keys = keysArraySorted
+            self.values = valuesArraySorted
         })
     }
     
-    
-     var refreshControl: UIRefreshControl?
-
-    //objc wrapper for #selector
-    @objc func refreshView() {
+    func getCountries() -> [String] {
+        //Get all country Names currently in the table view
         var countryArray: [String] = []
         for country in cellArray {
             countryArray.append(country.country)
         }
-        //UDPATE THIS_________________________________________________-
-        updateRates(countries: countryArray, baseCountry: "CAD")
-        
-        //You get the spinner to go away by ending animation in the update rates for some reason?
+        return countryArray
     }
     
+    //objc wrapper for #selector
+    var base = "CAD"
+    @objc func refreshView() {
+
+        let countryArray = getCountries()
+        updateRates(countries: countryArray, baseCountry: self.base)
+        
+        DispatchQueue.main.async(execute: {
+            self.tableView.refreshControl?.endRefreshing()
+            self.tableView.contentOffset = CGPoint.zero
+        })
+    }
+    
+    @IBOutlet weak var currencyTextField: UITextField!
+    @IBOutlet weak var baseCountryButton: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Testing _______________ REMOVE
         cellArray.append(CellDataObject(path: "usd.png", country: "USD", amount: 0.8366))
-        cellArray.append(CellDataObject(path: "cad.png", country: "CAD", amount: 1))
         cellArray.append(CellDataObject(path: "gbp.png", country: "GBP", amount: 0.5532))
         cellArray.append(CellDataObject(path: "eur.png", country: "EUR", amount: 0.6543))
 
@@ -136,6 +163,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         refreshControl.addTarget(self, action: #selector(refreshView), for: .valueChanged)
         refreshControl.attributedTitle = NSAttributedString(string: "Fetching Rates", attributes: nil)
 
+        //Get API Data
+        refreshView()
+        
         //Set self to be delegate and data source because....... TODO
         tableView.delegate = self
         tableView.dataSource = self
