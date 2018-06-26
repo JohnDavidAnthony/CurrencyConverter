@@ -10,7 +10,7 @@ import UIKit
 
 let apiKey = "83efe7edb3691dfe8b302259bffbff66"
 
-class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate {
 
     //Extends TableViewDelegate and TableViewDataSource Because..........
     
@@ -66,10 +66,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             detailedVC.selectedCell = selectedCell
             break
         
-        case "countrySelect":
-            let countrySelectVC = segue.destination as! CountrySelectorController
-            countrySelectVC.keys = self.keys
-            countrySelectVC.values = self.values
+//        case "countrySelect":
+//            let countrySelectVC = segue.destination as! CountrySelectorController
+//            countrySelectVC.keys = self.keys
+//            countrySelectVC.values = self.values
        
         default:
             print("Error: Segue not setup")
@@ -103,7 +103,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 cell.convertAmount = Double(round(amount*100000)/100000)
             }
          
-            //Call reload data in main thread because....?
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 //self.tableView.refreshControl?.endRefreshing()
@@ -119,6 +118,13 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             
             self.keys = keysArraySorted
             self.values = valuesArraySorted
+            
+            DispatchQueue.main.async {
+                self.picker.keys = self.keys
+                self.picker.values = self.values
+                self.picker.reloadAllComponents()
+            }
+
         })
     }
     
@@ -145,15 +151,16 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     @IBOutlet weak var currencyTextField: UITextField!
-    @IBOutlet weak var baseCountryButton: UIButton!
-
+    @IBOutlet weak var baseCountryTextField: UITextField!
+    var picker = CountrySelectorController()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //Testing _______________ REMOVE
-        cellArray.append(CellDataObject(path: "usd.png", country: "USD", amount: 0.8366))
-        cellArray.append(CellDataObject(path: "gbp.png", country: "GBP", amount: 0.5532))
-        cellArray.append(CellDataObject(path: "eur.png", country: "EUR", amount: 0.6543))
+        cellArray.append(CellDataObject(path: "USD.png", country: "USD", amount: 0.8366))
+        cellArray.append(CellDataObject(path: "GBP.png", country: "GBP", amount: 0.5532))
+        cellArray.append(CellDataObject(path: "EUR.png", country: "EUR", amount: 0.6543))
 
         let refreshControl = UIRefreshControl()
         // Add Refresh Control to Table View
@@ -166,9 +173,47 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         //Get API Data
         refreshView()
         
-        //Set self to be delegate and data source because....... TODO
+        //Create a UIPicker as that will choose the base country
+        let picker = UIPickerView()
+        picker.dataSource = self
+        picker.delegate = self
+        //Add the UIPicker as the keyboard view
+        baseCountryTextField.inputView = picker
+        
+        
+        //Set the tableview delegate & dataSource
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+
+//Country UIPicker Functions
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return keys.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return values[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        let path: String = keys[row] + ".png"
+        //Check to see if I have a photo for the selected country
+        let image =  UIImage(named: path)
+        if image == nil {
+            //Image does not exist, fallback
+            baseCountryTextField.text = keys[row]
+        }else{
+            //Image Exists, Remove text
+            baseCountryTextField.text = ""
+        }
+        baseCountryTextField.background = UIImage(named: path)
+        print(keys[row])
     }
 }
 
