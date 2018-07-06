@@ -15,21 +15,17 @@ class CountrySelectorController: UIPickerView, UIPickerViewDelegate, UIPickerVie
     var keys = [String]()
     var values = [String]()
     
-    let test = ["tes","dadw"]
-    
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        //return keys.count
-        return test.count
+        return keys.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        //return values[row]
-        return test[row]
+        return values[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {

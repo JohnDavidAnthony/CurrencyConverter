@@ -65,12 +65,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             let detailedVC = segue.destination as! DetailedInformationController
             detailedVC.selectedCell = selectedCell
             break
-        
-//        case "countrySelect":
-//            let countrySelectVC = segue.destination as! CountrySelectorController
-//            countrySelectVC.keys = self.keys
-//            countrySelectVC.values = self.values
-       
+            
         default:
             print("Error: Segue not setup")
         }
@@ -79,28 +74,36 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     //Update the currency exchange rate
     var keys = [String]()
     var values = [String]()
-    @objc func updateRates(countries: [String], baseCountry: String) {
+    @objc func updateRates() {
+        
+    //Get all country Names currently in the table view
+        var countryArray: [String] = []
+        for country in cellArray {
+            countryArray.append(country.country)
+        }
+        
         //Create Request String
         var request = ""
-        for country in countries {
+        for country in countryArray {
             request += country + ","
         }
         //Add basecountry to api call
-        request += baseCountry
+        request += self.base
         
         //Gets the data from the api and updates the cells
         let apiHandler = APIDataHandler()
         apiHandler.getDataFromURL(urlString: "http://data.fixer.io/api/latest?access_key=\(apiKey)&symbols=\(request)&format=1", completionHandler: {(data) in
             
             //Free API doesn't let me choose base so here is the logic to show the conversion on chosen base
+            
             //Get base country's rate so that we can divide all of the currencys by that amount
-            let base = data.rates[baseCountry]
+            let baseRate = data.rates[self.base]
             
             //Updates each cells convert amount adjusted for base country's rate
             for cell in self.cellArray {
-                let amount = (data.rates[cell.country]! / base!)
+                let amount = (data.rates[cell.country]! / baseRate!)
                 // Round to 5 decimal places and assign to cell
-                cell.convertAmount = Double(round(amount*100000)/100000)
+                cell.convertAmount = Double(round(amount * self.baseAmount * 100000)) / 100000
             }
          
             DispatchQueue.main.async {
@@ -128,32 +131,59 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         })
     }
     
-    func getCountries() -> [String] {
-        //Get all country Names currently in the table view
-        var countryArray: [String] = []
-        for country in cellArray {
-            countryArray.append(country.country)
-        }
-        return countryArray
-    }
+
     
-    //objc wrapper for #selector
+//objc wrapper for #selector
     var base = "CAD"
     @objc func refreshView() {
-
-        let countryArray = getCountries()
-        updateRates(countries: countryArray, baseCountry: self.base)
+        updateRates()
         
         DispatchQueue.main.async(execute: {
             self.tableView.refreshControl?.endRefreshing()
             self.tableView.contentOffset = CGPoint.zero
         })
     }
-    
+
+//Update the value of all cells based on amount entered
+//TODO Fix issue of mroe than one decimal entered by user
     @IBOutlet weak var currencyTextField: UITextField!
+    var baseAmount: Double = 1.00
+    @IBAction func currecyEditingEnd(_ sender: Any) {
+        baseAmount = Double(currencyTextField.text!)!
+        updateRates()
+    }
+
+//Because I am using a decimal keyboard, it has no done button
+//Creates custom done button
+    func customDoneButton(textField: UITextField){
+        //Create Tool Bar
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
+        
+        //Create Button
+        let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(keyboardAway))
+        
+        //Add done button to tool bar
+        toolbar.items = [doneButton]
+        //Add toolbar as an accessory view
+        textField.inputAccessoryView = toolbar
+        
+        
+        
+        //Test
+        textField.inputAccessoryView = toolbar
+        
+    }
+    //Resigns the keyboard
+    @objc func keyboardAway(){
+        //currencyTextField.resignFirstResponder()
+        view.endEditing(true)
+    }
+
+    
+    
+//Load Up Everything I need when the view loads
     @IBOutlet weak var baseCountryTextField: UITextField!
     var picker = CountrySelectorController()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -179,6 +209,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         picker.delegate = self
         //Add the UIPicker as the keyboard view
         baseCountryTextField.inputView = picker
+        
+        //Add the custom done button to the keyboard maybe Remove?
+        customDoneButton(textField: currencyTextField)
+        customDoneButton(textField: baseCountryTextField)
         
         
         //Set the tableview delegate & dataSource
@@ -213,7 +247,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
             baseCountryTextField.text = ""
         }
         baseCountryTextField.background = UIImage(named: path)
-        print(keys[row])
+        base = keys[row]
+        updateRates()
     }
 }
 
