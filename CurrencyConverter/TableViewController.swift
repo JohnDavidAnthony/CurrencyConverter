@@ -33,7 +33,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     //Return the height of the header
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CGFloat(70)
+        return CGFloat(90)
     }
     
     //Create Cell with dequeue resuable cell at the current index and with our Reuse Identifier
@@ -108,7 +108,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
          
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                //self.tableView.refreshControl?.endRefreshing()
             }
         })
         
@@ -126,8 +125,10 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 self.picker.keys = self.keys
                 self.picker.values = self.values
                 self.picker.reloadAllComponents()
+                
+                //Update Country Name
+                self.countryNameLabel.text = data.symbols[self.base]
             }
-
         })
     }
     
@@ -166,10 +167,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         toolbar.items = [doneButton]
         //Add toolbar as an accessory view
         textField.inputAccessoryView = toolbar
-        
-        
-        
-        //Test
         textField.inputAccessoryView = toolbar
         
     }
@@ -214,7 +211,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         customDoneButton(textField: currencyTextField)
         customDoneButton(textField: baseCountryTextField)
         
-        
         //Set the tableview delegate & dataSource
         tableView.delegate = self
         tableView.dataSource = self
@@ -222,6 +218,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
 
 //Country UIPicker Functions
+    @IBOutlet weak var countryNameLabel: UILabel!
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
