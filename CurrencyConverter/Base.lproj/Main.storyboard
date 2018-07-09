@@ -19,11 +19,11 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="countryConverter" rowHeight="95" id="zmc-SH-HNf" userLabel="Country Cell" customClass="CellView" customModule="CurrencyConverter" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="countryConverter" rowHeight="95" id="zmc-SH-HNf" userLabel="Country Cell" customClass="CellView" customModule="CurrencyConverter" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="95"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zmc-SH-HNf" id="0nF-g3-b6F">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="94.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="341" height="94.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="USD" translatesAutoresizingMaskIntoConstraints="NO" id="pOb-Y3-4nY">
@@ -33,13 +33,13 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$ 0.7765" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBO-v2-U0N">
-                                            <rect key="frame" x="108" y="11" width="167" height="33.5"/>
+                                            <rect key="frame" x="108" y="11" width="141" height="33.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8BQ-42-OxT">
-                                            <rect key="frame" x="108" y="53" width="90" height="21"/>
+                                            <rect key="frame" x="108" y="53" width="64" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -68,14 +68,30 @@
                         </prototypes>
                     </tableView>
                     <navigationItem key="navigationItem" id="eYs-5m-qdx">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="gear" id="0PI-Ag-ApR">
+                        <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" title="About" id="0PI-Ag-ApR">
                             <connections>
                                 <segue destination="rum-HT-pac" kind="show" id="PmX-39-KqL"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="EWw-iM-bYl"/>
+                        <textField key="titleView" hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="Hfo-71-xN5" userLabel="Adding Cell TextField">
+                            <rect key="frame" x="175" y="7" width="25" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="addingCellDoneEditing:" destination="SRk-tX-YeQ" eventType="editingDidEnd" id="ilh-RR-qaa"/>
+                            </connections>
+                        </textField>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="EWw-iM-bYl">
+                            <connections>
+                                <action selector="addButton:" destination="SRk-tX-YeQ" id="oS7-MQ-b7t"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addingCellTextField" destination="Hfo-71-xN5" id="cGt-Pe-nZT"/>
                         <outlet property="baseCountryTextField" destination="rsh-SW-COW" id="5vE-7T-y0W"/>
                         <outlet property="countryNameLabel" destination="JjL-Cd-IzC" id="nW8-Wm-a7I"/>
                         <outlet property="currencyTextField" destination="PWa-d9-DVs" id="4Z4-yc-TWS"/>
@@ -89,8 +105,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="PWa-d9-DVs" userLabel="input Label">
-                            <rect key="frame" x="106" y="8" width="206" height="50"/>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="1" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="PWa-d9-DVs" userLabel="input Label">
+                            <rect key="frame" x="103" y="8" width="209" height="50"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="HIt-PF-pof"/>
                             </constraints>
@@ -101,8 +117,8 @@
                                 <action selector="currecyEditingEnd:" destination="SRk-tX-YeQ" eventType="editingDidEnd" id="rbg-qY-2y6"/>
                             </connections>
                         </textField>
-                        <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" background="CAD" translatesAutoresizingMaskIntoConstraints="NO" id="rsh-SW-COW">
-                            <rect key="frame" x="8" y="-8" width="83" height="80"/>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" background="CAD" translatesAutoresizingMaskIntoConstraints="NO" id="rsh-SW-COW">
+                            <rect key="frame" x="8" y="-8" width="80" height="80"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="80" id="7hL-XQ-5Kp"/>
                                 <constraint firstAttribute="width" secondItem="rsh-SW-COW" secondAttribute="height" multiplier="1:1" id="HI7-Wu-FGo"/>
@@ -111,6 +127,9 @@
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <action selector="countryPickerDoneEditing:" destination="SRk-tX-YeQ" eventType="editingDidEnd" id="cjT-p6-Peg"/>
+                            </connections>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JjL-Cd-IzC" userLabel="countryNameLabel">
                             <rect key="frame" x="8" y="61" width="304" height="33"/>
@@ -118,8 +137,8 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHg-hE-Aor">
-                            <rect key="frame" x="90" y="17" width="16" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHg-hE-Aor">
+                            <rect key="frame" x="87" y="17" width="16" height="30"/>
                             <fontDescription key="fontDescription" type="system" pointSize="25"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -265,6 +284,5 @@ https://github.com/JohnDavidAnthony
     <resources>
         <image name="CAD" width="64" height="64"/>
         <image name="USD" width="64" height="64"/>
-        <image name="gear" width="30" height="30"/>
     </resources>
 </document>

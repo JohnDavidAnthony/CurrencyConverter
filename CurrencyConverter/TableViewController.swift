@@ -12,13 +12,12 @@ let apiKey = "83efe7edb3691dfe8b302259bffbff66"
 
 class TableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    //Extends TableViewDelegate and TableViewDataSource Because..........
+//TableView Functions here
     
     @IBOutlet var tableView: UITableView!
     
     //Cell Array holds the data of each country cell
     fileprivate var cellArray = [CellDataObject]()
-    
     
     //Returns the number of items in cellArray, the number of rows we want in the table
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -55,13 +54,50 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         print(indexPath.item)
     }
     
-    //Called whenever a segue is about to occur, gives me time to send data to upcoming VC
+    // Allows me to set the actions for when a user swipes on a cell
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        //Create a delete action
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete", handler: { (action, index) in
+            self.cellArray.remove(at: indexPath.row)
+            //Make sure to update the tableview
+            self.tableView.reloadData()
+        })
+        
+        //return the actions
+        return [delete]
+    }
+    
+    // Add a cell
+    @IBAction func addButton(_ sender: Any) {
+        addingCellTextField.becomeFirstResponder()
+        print("Run")
+    }
+    @IBOutlet weak var addingCellTextField: UITextField!
+    @IBAction func addingCellDoneEditing(_ sender: Any) {
+        var existing = false
+        // Check to see if country is already selected
+        for cell in cellArray {
+            if cell.country == keys[countryPickerSelectedRow] {
+                existing = true
+            }
+        }
+        if !existing {
+            cellArray.append(CellDataObject(path: keys[countryPickerSelectedRow] + ".png", country: keys[countryPickerSelectedRow], amount: 0))
+            //Make sure to update the tableview
+            updateRates()
+        }
+        
+    }
+    
+    
+    // Called whenever a segue is about to occur, gives me time to send data to upcoming VC
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        //Switch statment to differentiate what segues are occuring
+        // Switch statment to differentiate what segues are occuring
         switch segue.identifier {
         case "detailed":
             
-            //Temporary passing of vars TOBe Updated
+            // Temporary passing of vars TOBe Updated
             let detailedVC = segue.destination as! DetailedInformationController
             detailedVC.selectedCell = selectedCell
             break
@@ -150,7 +186,11 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var currencyTextField: UITextField!
     var baseAmount: Double = 1.00
     @IBAction func currecyEditingEnd(_ sender: Any) {
-        baseAmount = Double(currencyTextField.text!)!
+        if currencyTextField.text == "" {
+            baseAmount = 1
+        } else{
+            baseAmount = Double(currencyTextField.text!)!
+        }
         updateRates()
     }
 
@@ -160,26 +200,49 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         //Create Tool Bar
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
         
-        //Create Button
+        //Create Done Button
         let doneButton = UIBarButtonItem(title: "Done", style: UIBarButtonItem.Style.done, target: self, action: #selector(keyboardAway))
         
+        //Create Cancel Button
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(keyboardAway))
+        
+        
+        // Create Flexible space so that cancel and done are aligned to the edges
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: self, action: nil)
+        
         //Add done button to tool bar
-        toolbar.items = [doneButton]
+        toolbar.items = [cancelButton, flexibleSpace, doneButton]
         //Add toolbar as an accessory view
-        textField.inputAccessoryView = toolbar
         textField.inputAccessoryView = toolbar
         
     }
     //Resigns the keyboard
     @objc func keyboardAway(){
-        //currencyTextField.resignFirstResponder()
+        print("run")
         view.endEditing(true)
+        //Todo Figure out why cell text field will not resign
+        addingCellTextField.endEditing(true)
     }
 
-    
+    @IBOutlet weak var baseCountryTextField: UITextField!
+    // Set the picker to update base when done editing
+    @IBAction func countryPickerDoneEditing(_ sender: Any) {
+        let path: String = keys[countryPickerSelectedRow] + ".png"
+        //Check to see if I have a photo for the selected country
+        let image =  UIImage(named: path)
+        if image == nil {
+            //Image does not exist, fallback
+            baseCountryTextField.text = keys[countryPickerSelectedRow]
+        }else{
+            //Image Exists, Remove text
+            baseCountryTextField.text = ""
+        }
+        baseCountryTextField.background = UIImage(named: path)
+        base = keys[countryPickerSelectedRow]
+        updateRates()
+    }
     
 //Load Up Everything I need when the view loads
-    @IBOutlet weak var baseCountryTextField: UITextField!
     var picker = CountrySelectorController()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -206,10 +269,12 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         picker.delegate = self
         //Add the UIPicker as the keyboard view
         baseCountryTextField.inputView = picker
+        addingCellTextField.inputView = picker
         
         //Add the custom done button to the keyboard maybe Remove?
         customDoneButton(textField: currencyTextField)
         customDoneButton(textField: baseCountryTextField)
+        customDoneButton(textField: addingCellTextField)
         
         //Set the tableview delegate & dataSource
         tableView.delegate = self
@@ -232,20 +297,9 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return values[row]
     }
     
+    var countryPickerSelectedRow = 0
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let path: String = keys[row] + ".png"
-        //Check to see if I have a photo for the selected country
-        let image =  UIImage(named: path)
-        if image == nil {
-            //Image does not exist, fallback
-            baseCountryTextField.text = keys[row]
-        }else{
-            //Image Exists, Remove text
-            baseCountryTextField.text = ""
-        }
-        baseCountryTextField.background = UIImage(named: path)
-        base = keys[row]
-        updateRates()
+        countryPickerSelectedRow = row
     }
 }
 
