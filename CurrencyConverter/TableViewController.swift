@@ -246,11 +246,6 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var picker = CountrySelectorController()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Testing _______________ REMOVE
-        cellArray.append(CellDataObject(path: "USD.png", country: "USD", amount: 0.8366))
-        cellArray.append(CellDataObject(path: "GBP.png", country: "GBP", amount: 0.5532))
-        cellArray.append(CellDataObject(path: "EUR.png", country: "EUR", amount: 0.6543))
 
         let refreshControl = UIRefreshControl()
         // Add Refresh Control to Table View
