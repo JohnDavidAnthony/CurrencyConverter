@@ -26,11 +26,13 @@ class APIDataHandler{
             do {
                 //Decode retrived data with JSONDecoder
                 //general Decodable.Type isn't enough so I need the concrete Decodable type
-                let output = try JSONDecoder().decode(ConvertData.self, from: data!)
                 
-                //Call completion handler to tell that async fxn is done
-                completionHandler(output)
-                
+                //If There is no data, present an alert to the user
+                if (data != nil){
+                    let output = try JSONDecoder().decode(ConvertData.self, from: data!)
+                    //Call completion handler to tell that async fxn is done
+                    completionHandler(output)
+                }
             } catch let jsonError {
                 print(jsonError)
             }
